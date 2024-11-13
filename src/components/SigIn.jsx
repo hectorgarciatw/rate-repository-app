@@ -1,14 +1,36 @@
 import React from "react";
-import { View, Text, Button, StyleSheet } from "react-native";
-import { useNavigate } from "react-router-native";
+import { View, Button, StyleSheet } from "react-native";
+import { Formik } from "formik";
+import * as yup from "yup";
+
+import FormikTextInput from "./FormikTextInput";
+
+const validationSchema = yup.object().shape({
+    username: yup.string().required("Username is required"),
+    password: yup.string().required("Password is required"),
+});
 
 const SigIn = () => {
-    const navigate = useNavigate();
+    const initialValues = {
+        username: "",
+        password: "",
+    };
+
+    const onSubmit = (values) => {
+        console.log(values);
+    };
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Login Screen</Text>
-            <Button title="Go to Repositories" onPress={() => navigate("/repositories")} />
+            <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
+                {({ handleSubmit }) => (
+                    <View style={styles.formContainer}>
+                        <FormikTextInput name="username" placeholder="Username" />
+                        <FormikTextInput name="password" placeholder="Password" secureTextEntry />
+                        <Button title="Submit" onPress={handleSubmit} />
+                    </View>
+                )}
+            </Formik>
         </View>
     );
 };
@@ -18,6 +40,14 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
+    },
+    formContainer: {
+        width: "80%",
+        padding: 20,
+        borderWidth: 1,
+        borderColor: "#ccc",
+        borderRadius: 5,
+        backgroundColor: "#fff",
     },
     title: {
         fontSize: 24,
