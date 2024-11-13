@@ -1,9 +1,10 @@
 import React from "react";
-import Constants from "expo-constants";
-import { Text, StyleSheet, View } from "react-native";
+import { View, StyleSheet } from "react-native";
+import { Route, Routes, Navigate } from "react-router-native";
 
-//components
+// Components
 import RepositoryList from "./RepositoryList";
+import SigIn from "./SigIn";
 
 const styles = StyleSheet.create({
     container: {
@@ -15,7 +16,12 @@ const styles = StyleSheet.create({
 const Main = () => {
     return (
         <View style={styles.container}>
-            <RepositoryList />
+            <Routes>
+                <Route path="/sigin" element={<SigIn />} />
+                <Route path="/repositories" element={<RepositoryList />} />
+                {/* Unknown route */}
+                <Route path="*" element={<Navigate to="/repositories" replace />} />
+            </Routes>
         </View>
     );
 };
