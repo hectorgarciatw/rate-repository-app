@@ -1,23 +1,6 @@
 import React from "react";
-import { StyleSheet } from "react-native";
+import { TextInput, Text, StyleSheet } from "react-native";
 import { useField } from "formik";
-
-import TextInput from "./TextInput";
-import Text from "./Text";
-
-const styles = StyleSheet.create({
-    input: {
-        borderWidth: 1,
-        borderColor: "#ccc",
-        borderRadius: 5,
-        padding: 10,
-        marginBottom: 10,
-    },
-    errorText: {
-        marginTop: 5,
-        color: "red",
-    },
-});
 
 const FormikTextInput = ({ name, ...props }) => {
     const [field, meta, helpers] = useField(name);
@@ -25,10 +8,28 @@ const FormikTextInput = ({ name, ...props }) => {
 
     return (
         <>
-            <TextInput onChangeText={(value) => helpers.setValue(value)} onBlur={() => helpers.setTouched(true)} value={field.value} error={showError} {...props} />
+            <TextInput {...field} {...props} style={[styles.input, showError && styles.inputError]} />
             {showError && <Text style={styles.errorText}>{meta.error}</Text>}
         </>
     );
 };
+
+const styles = StyleSheet.create({
+    input: {
+        height: 40,
+        borderColor: "#ccc",
+        borderWidth: 1,
+        borderRadius: 5,
+        marginBottom: 10,
+        paddingLeft: 10,
+    },
+    inputError: {
+        borderColor: "#d73a4a",
+    },
+    errorText: {
+        color: "red",
+        marginTop: 5,
+    },
+});
 
 export default FormikTextInput;
